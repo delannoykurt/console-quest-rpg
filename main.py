@@ -2,6 +2,7 @@ from player import Player
 from enemy import Enemy
 from item import get_random_loot
 from map import GameMap
+from keyboard_input import get_arrow_key
 
 import random
 
@@ -54,10 +55,20 @@ def main():
         print("\n📍 Position actuelle :")
         game_map.display()
 
+        """ ------------------/ remove after checking verification.
         print("\nDéplacement : [n] nord, [s] sud, [e] est, [w] ouest")
         print("[q] quitter, [c] combattre ennemi aléatoire")
         action = input("> ")
+        """
 
+        print("Utilise les flèches directionnelles pour te déplacer.")
+        print("Touche 'c' pour combattre, 'q' pour quitter.")
+        action = get_arrow_key()
+
+        if action is None:
+            action = input("Commande : ").strip()
+
+        # doesn't touch this event because is be checking from keyboard_input.py for mapping the keyboard with the differents arrow directionnal
         if action in ["n", "s", "e", "w"]:
             tile = game_map.move_player(action)
             if tile == "🏰":
