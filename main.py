@@ -1,8 +1,10 @@
 from player import Player
 from enemy import Enemy
-from item import Item
 from item import get_random_loot
 from map import GameMap
+
+import random
+
 
 
 def combat(player, enemy):
@@ -57,7 +59,24 @@ def main():
         action = input("> ")
 
         if action in ["n", "s", "e", "w"]:
-            game_map.move_player(action)
+            tile = game_map.move_player(action)
+            if tile == "🏰":
+                print("🏰 Tu arrives au château. Un mystère t’attend...")
+            elif tile == "🗻":
+                print("🗻 Une montagne bloque le chemin... mais un cri provient du sommet.")
+            elif tile == "💰":
+                print("💰 Tu trouves un coffre ! Tu gagnes un objet.")
+                loot = get_random_loot()
+                if loot:
+                    hero.inventory.append(loot)
+                    print(f"🎁 Tu obtiens : {loot.name}")
+            elif tile == "🌀":
+                print("🌀 Un portail magique t’enveloppe... et te téléporte ailleurs !")
+                game_map.player_pos = [random.randint(0, game_map.height - 1), random.randint(0, game_map.width - 1)]
+            elif tile and random.random() < 0.3:
+                print("👾 Un ennemi t’attaque pendant ton exploration !")
+                combat(hero, Enemy())
+                game_map.move_player(action)
         elif action == "c":
             enemy = Enemy()
             combat(hero, enemy)
