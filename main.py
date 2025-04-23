@@ -3,6 +3,7 @@ from enemy import Enemy
 from item import get_random_loot
 from map import GameMap
 from keyboard_input import get_arrow_key
+from quest import Quest
 
 import random
 
@@ -49,6 +50,14 @@ def combat(player, enemy):
 def main():
     name = input("Nom du héros : ")
     hero = Player(name)
+
+    castle_quest = Quest(
+        title="Visite royale",
+        description="Rends-toi au château pour rencontrer le roi.",
+        location="🏰"
+    )
+
+    hero.quests.append(castle_quest)
     game_map = GameMap()
 
     while True:
@@ -62,7 +71,8 @@ def main():
         """
 
         print("Utilise les flèches directionnelles pour te déplacer.")
-        print("Touche 'c' pour combattre, 'q' pour quitter.")
+        print("Touche 'j' pour journal, 'c' pour combattre, 'q' pour quitter.")
+
         action = get_arrow_key()
 
         if action is None:
@@ -71,6 +81,11 @@ def main():
         # doesn't touch this event because is be checking from keyboard_input.py for mapping the keyboard with the differents arrow directionnal
         if action in ["n", "s", "e", "w"]:
             tile = game_map.move_player(action)
+
+            for quest in hero.quests:
+                if not quest.completed and quest.check_completion(hero, tile):
+                    print(f"🎉 Quête accomplie : {quest.title} !")
+
             if tile == "🏰":
                 print("🏰 Tu arrives au château. Un mystère t’attend...")
             elif tile == "🗻":
@@ -94,6 +109,8 @@ def main():
         elif action == "q":
             print("👋 À bientôt, aventurier !")
             break
+        elif action == "j":
+            hero.show_journal()
         else:
             print("Commande inconnue.")
 

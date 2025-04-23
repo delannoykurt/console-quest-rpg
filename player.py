@@ -9,6 +9,7 @@ class Player:
         self.xp = 0
         self.xp_to_next_level = 50
         self.inventory = []
+        self.quests = []
 
     def is_alive(self):
         return self.hp > 0
@@ -61,3 +62,13 @@ class Player:
                 print("Choix invalide.")
         else:
             print("Action annulée.")
+
+    def show_journal(self):
+        print("\n📜 Journal de Quêtes :")
+        if not self.quests:
+            print("Aucune quête pour le moment.")
+            return
+
+        for i, q in enumerate(self.quests):
+            status = "✔️" if q.completed else "❌"
+            print(f"{i+1}. {q.title} [{status}] — {q.description}")
