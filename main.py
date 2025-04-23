@@ -1,6 +1,7 @@
 from player import Player
 from enemy import Enemy
 from item import Item
+from item import get_random_loot
 
 
 def combat(player, enemy):
@@ -29,6 +30,13 @@ def combat(player, enemy):
             xp_earned = 30
             print(f"{enemy.name} a laissé derrière {xp_earned} points d’expérience.")
             player.gain_xp(xp_earned)
+
+            loot = get_random_loot()
+            if loot:
+                player.inventory.append(loot)
+                print(f"🎁 {player.name} trouve un objet : {loot.name} !")
+            else:
+                print("🪨 Rien d'intéressant trouvé cette fois...")
         else:
             print(f"\n💀 {player.name} a été vaincu...")
 
