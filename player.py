@@ -8,6 +8,7 @@ class Player:
         self.level = 1
         self.xp = 0
         self.xp_to_next_level = 50
+        self.inventory = []
 
     def is_alive(self):
         return self.hp > 0
@@ -40,3 +41,23 @@ class Player:
         self.hp = self.max_hp  # Restaure la vie au niveau supérieur
         print(f"\n🔥 {self.name} passe au niveau {self.level} !")
         print(f"💪 PV max : {self.max_hp}, Attaque : {self.attack_power}")
+
+    def show_inventory(self):
+        if not self.inventory:
+            print("🎒 Inventaire vide.")
+            return
+
+        print("🎒 Inventaire :")
+        for i, item in enumerate(self.inventory):
+            print(f"{i + 1}. {item.name}")
+
+        choice = input("Choisir un objet à utiliser (ou rien pour annuler) : ")
+        if choice.isdigit():
+            index = int(choice) - 1
+            if 0 <= index < len(self.inventory):
+                item = self.inventory.pop(index)
+                item.use(self)
+            else:
+                print("Choix invalide.")
+        else:
+            print("Action annulée.")
