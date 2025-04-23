@@ -2,6 +2,7 @@ from player import Player
 from enemy import Enemy
 from item import Item
 from item import get_random_loot
+from map import GameMap
 
 
 def combat(player, enemy):
@@ -45,15 +46,26 @@ def combat(player, enemy):
 def main():
     name = input("Nom du héros : ")
     hero = Player(name)
+    game_map = GameMap()
 
-    potion_max = Item("Potion Max", "heal", 50)
-    boost = Item("Potion de Force", "boost", 5)
+    while True:
+        print("\n📍 Position actuelle :")
+        game_map.display()
 
-    hero.inventory.append(potion_max)
-    hero.inventory.append(boost)
+        print("\nDéplacement : [n] nord, [s] sud, [e] est, [w] ouest")
+        print("[q] quitter, [c] combattre ennemi aléatoire")
+        action = input("> ")
 
-    enemy = Enemy()
-    combat(hero, enemy)
+        if action in ["n", "s", "e", "w"]:
+            game_map.move_player(action)
+        elif action == "c":
+            enemy = Enemy()
+            combat(hero, enemy)
+        elif action == "q":
+            print("👋 À bientôt, aventurier !")
+            break
+        else:
+            print("Commande inconnue.")
 
 if __name__ == "__main__":
     main()
