@@ -4,8 +4,30 @@ from item import get_random_loot
 from map import GameMap
 from keyboard_input import get_arrow_key
 from quest import Quest
+from npc import NPC
 
 import random
+
+
+old_mage_quest = Quest(
+    title="La pierre magique",
+    description="Récupère la pierre magique cachée dans la montagne.",
+    location="🗻"
+)
+
+pnjs = [
+    NPC(
+        name="Sage Erwin",
+        dialogue="Je vois en toi l’étoile d’un élu. Prends cette mission.",
+        location=[1, 0],
+        gives_quest=old_mage_quest
+    ),
+    NPC(
+        name="Pirate Trézor",
+        dialogue="Si tu trouves un coffre, pense à moi, moussaillon.",
+        location=[3, 2]
+    )
+]
 
 
 
@@ -85,6 +107,10 @@ def main():
             for quest in hero.quests:
                 if not quest.completed and quest.check_completion(hero, tile):
                     print(f"🎉 Quête accomplie : {quest.title} !")
+
+            for npc in pnjs:
+                if npc.location == game_map.player_pos:
+                    npc.interact(hero)
 
             if tile == "🏰":
                 print("🏰 Tu arrives au château. Un mystère t’attend...")
